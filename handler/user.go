@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"go-startup/helper"
 	"go-startup/user"
 	"net/http"
 
@@ -26,5 +27,13 @@ func (h *userHandler) RegisterUser(c *gin.Context) {
 	if err != nil {
 		c.JSON(http.StatusBadRequest, nil)
 	}
-	c.JSON(http.StatusOK, nil)
+
+	user, err := h.userService.RegisterUser(input)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, nil)
+	}
+
+	response := helper.APIResponse("account has been registered", http.StatusOK, "success", user)
+	c.JSON(http.StatusOK, response)
+
 }
