@@ -13,3 +13,4 @@ folder repository itu gunanya untuk sebagai tempat untuk terkoneksi ke database
 
 
 rabu 24-11-2021 belajar docker
+kamis belajar docker
