@@ -6,7 +6,6 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/go-playground/validator/v10"
 )
 
 type userHandler struct {
@@ -24,14 +23,10 @@ func (h *userHandler) RegisterUser(c *gin.Context) {
 	// struct di atas kita parsing sebagai parameter
 
 	var input user.RegisterUserInput
+
 	err := c.ShouldBindJSON(&input)
 	if err != nil {
-		var errors []string
-
-		for _, e := range err.(validator.ValidationErrors) {
-			errors = append(errors, e.Error())
-		}
-
+		errors := helper.FormatValidationError(err)
 		errorMessage := gin.H{"errors": errors}
 
 		response := helper.APIResponse("registered account failed", http.StatusUnprocessableEntity, "error", errorMessage)
@@ -51,5 +46,15 @@ func (h *userHandler) RegisterUser(c *gin.Context) {
 
 	response := helper.APIResponse("account has been registered", http.StatusOK, "success", formatter)
 	c.JSON(http.StatusOK, response)
+
+}
+
+func (h *userHandler) Login(c *gin.Context) {
+	// user memasukkann input email dan password
+	// input di tangkap handler
+	// mapping dari input ke struct
+	// input struct parsing ke service
+	// di service mencari dengan bantuan repository email yang di inputkan
+	// mencocokkan password
 
 }
