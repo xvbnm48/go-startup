@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"go-startup/handler"
 	"go-startup/user"
 	"log"
@@ -20,17 +19,6 @@ func main() {
 	userRepository := user.NewRepository(db)
 	userService := user.NewService(userRepository)
 
-	// uji coba
-	userByEmail, err := userRepository.FindByEmail("sakichan@challange.com")
-	if err != nil {
-		fmt.Println(err.Error())
-	}
-	if userByEmail.ID == 0 {
-		fmt.Println("user tidak ditemukan")
-	} else {
-		fmt.Println(userByEmail.Name)
-	}
-
 	userHandler := handler.NewUserHandler(userService)
 
 	router := gin.Default()
@@ -38,5 +26,6 @@ func main() {
 	api := router.Group("/api/v1")
 
 	api.POST("/users", userHandler.RegisterUser)
+	api.POST("/sessions", userHandler.Login)
 	router.Run()
 }
