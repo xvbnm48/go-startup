@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"go-startup/auth"
 	"go-startup/handler"
 	"go-startup/user"
@@ -22,9 +21,9 @@ func main() {
 	userService := user.NewService(userRepository)
 	userService.SaveAvatar(1, "images/avatar.jpg")
 	authService := auth.NewService()
-	fmt.Println(authService.GenerateToken(10))
+	//fmt.Println(authService.GenerateToken(10))
 
-	userHandler := handler.NewUserHandler(userService)
+	userHandler := handler.NewUserHandler(userService, authService)
 
 	router := gin.Default()
 

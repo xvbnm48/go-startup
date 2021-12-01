@@ -2,8 +2,10 @@ package handler
 
 import (
 	"fmt"
+	"go-startup/auth"
 	"go-startup/helper"
 	"go-startup/user"
+
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -11,10 +13,11 @@ import (
 
 type userHandler struct {
 	userService user.Service
+	authService auth.Service
 }
 
-func NewUserHandler(userService user.Service) *userHandler {
-	return &userHandler{userService}
+func NewUserHandler(userService user.Service, authService auth.Service) *userHandler {
+	return &userHandler{userService, authService}
 
 }
 
@@ -43,7 +46,16 @@ func (h *userHandler) RegisterUser(c *gin.Context) {
 		return
 	}
 
-	formatter := user.FormatUser(newUser, "tokennnnn")
+	token, err := h.authService.GenerateToken(newUser.ID)
+	if err != nil {
+		response := helper.APIResponse("registered account failed", http.StatusBadRequest, "error", nil)
+
+		c.JSON(http.StatusBadRequest, response)
+		return
+
+	}
+
+	formatter := user.FormatUser(newUser, token)
 
 	response := helper.APIResponse("account has been registered", http.StatusOK, "success", formatter)
 	c.JSON(http.StatusOK, response)
@@ -81,7 +93,16 @@ func (h *userHandler) Login(c *gin.Context) {
 
 	}
 
-	formatter := user.FormatUser(loggedInUser, "tokennnn")
+	token, err := h.authService.GenerateToken(loggedInUser.ID)
+	if err != nil {
+		response := helper.APIResponse("Loginn failed", http.StatusBadRequest, "error", nil)
+
+		c.JSON(http.StatusBadRequest, response)
+		return
+
+	}
+
+	formatter := user.FormatUser(loggedInUser, token)
 	response := helper.APIResponse("successfuly login", http.StatusOK, "success", formatter)
 	c.JSON(http.StatusOK, response)
 
