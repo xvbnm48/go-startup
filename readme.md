@@ -39,3 +39,12 @@ tes uji coba login
 	//fmt.Println(user.Email)
 	//fmt.Println(user.Name)
 
+
+di gorm untuk mendapatkan sebuah file dari header itu dengan menggunakan 
+c.FormFile
+dengan parameternya itu nama headernya
+
+terus untuk untuk menyimpan gambarnya dengan perintah
+
+c.SaveUploadedFile()
+dengan paramerternya , file tadi yang ditangkap dan path nya

@@ -130,6 +130,7 @@ func (h *userHandler) CheckEmailAvailability(c *gin.Context) {
 }
 
 func (h *userHandler) UploadAvatar(c *gin.Context) {
+	// untuk menerima inputan dari header berupa file
 	file, err := c.FormFile("avatar")
 
 	if err != nil {
@@ -141,6 +142,7 @@ func (h *userHandler) UploadAvatar(c *gin.Context) {
 		return
 	}
 
+	//dari jwt tapi sekarang hard code
 	userId := 1
 
 	//path := "images/" + file.Filename

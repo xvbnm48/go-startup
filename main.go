@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+	"go-startup/auth"
 	"go-startup/handler"
 	"go-startup/user"
 	"log"
@@ -19,6 +21,8 @@ func main() {
 	userRepository := user.NewRepository(db)
 	userService := user.NewService(userRepository)
 	userService.SaveAvatar(1, "images/avatar.jpg")
+	authService := auth.NewService()
+	fmt.Println(authService.GenerateToken(10))
 
 	userHandler := handler.NewUserHandler(userService)
 
