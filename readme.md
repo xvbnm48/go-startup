@@ -17,6 +17,7 @@ kamis belajar docker
 
 
 tes uji email di temukan
+```go
 	// uji coba
 	userByEmail, err := userRepository.FindByEmail("sakichan@challange.com")
 	if err != nil {
@@ -27,24 +28,29 @@ tes uji email di temukan
 	} else {
 		fmt.Println(userByEmail.Name)
 	}
+```
 
 
 tes uji coba login
-	//user, err := userService.Login(input)
-	//if err != nil {
-	//	fmt.Println("terjadi kesalahan")
-	//	fmt.Println(err.Error())
-	//}
+```go
+	user, err := userService.Login(input)
+	if err != nil {
+		fmt.Println("terjadi kesalahan")
+		fmt.Println(err.Error())
+	}
 
-	//fmt.Println(user.Email)
-	//fmt.Println(user.Name)
-
+	fmt.Println(user.Email)
+	fmt.Println(user.Name)
+```
 
 di gorm untuk mendapatkan sebuah file dari header itu dengan menggunakan 
+```go
 c.FormFile
+```
 dengan parameternya itu nama headernya
 
 terus untuk untuk menyimpan gambarnya dengan perintah
-
+```go
 c.SaveUploadedFile()
+```
 dengan paramerternya , file tadi yang ditangkap dan path nya
