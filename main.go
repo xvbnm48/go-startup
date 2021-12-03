@@ -54,19 +54,29 @@ func main() {
 
 func authMiddleware(authService auth.Service, userService user.Service) gin.HandlerFunc {
 	return func(c *gin.Context) {
+		// mendapatkan headernya dengan key Authorization
 		authHeader := c.GetHeader("Authorization")
+
+		// ini untuk cek bearer ada atau ga di header
 		if !strings.Contains(authHeader, "Bearer") {
 			respose := helper.APIResponse("unauthorized", http.StatusUnauthorized, "error", nil)
 			c.AbortWithStatusJSON(http.StatusUnauthorized, respose)
 			return
 		}
 
+		// ini untuk mengsplit header tadi untuk ambil tokennya saja
+		// struktur headernya
+		// Bearer tokentokentoken
+		// di split dengan spasi " "
+
 		tokenString := ""
 		arrayToken := strings.Split(authHeader, " ")
 		if len(arrayToken) == 2 {
 			tokenString = arrayToken[1]
+			// mengisi token string dengan array token index ke 1 yang berisi token
 		}
 
+		// disini memvalidasi token yang dapat dari split tadi 
 		token, err := authService.ValidateToken(tokenString)
 
 		if err != nil {
@@ -75,7 +85,7 @@ func authMiddleware(authService auth.Service, userService user.Service) gin.Hand
 			return
 
 		}
-
+		// mengambil claim pada auth
 		claim, ok := token.Claims.(jwt.MapClaims)
 		if !ok || !token.Valid {
 			respose := helper.APIResponse("unauthorized", http.StatusUnauthorized, "error", nil)
