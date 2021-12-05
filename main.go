@@ -1,7 +1,10 @@
 package main
 
 import (
+	"fmt"
 	"go-startup/auth"
+	"go-startup/campaign"
+
 	"go-startup/handler"
 	"go-startup/helper"
 	"go-startup/user"
@@ -18,13 +21,30 @@ import (
 func main() {
 	dsn := "root:@tcp(127.0.0.1:3306)/go-startup?charset=utf8mb4&parseTime=True&loc=Local"
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+
 	if err != nil {
 		log.Fatal(err.Error())
 	}
+
 	userRepository := user.NewRepository(db)
+	campaignRepository := campaign.NewRepository(db)
+
+	campaings, err := campaignRepository.FindByUserID(1)
+
+	fmt.Println(len(campaings))
+
+	for _, campaign := range campaings {
+		fmt.Println(campaign.Name)
+		if len(campaign.CampaignImages) > 0 {
+			fmt.Println(campaign.CampaignImages[0].FileName)
+
+		}
+	}
+
 	userService := user.NewService(userRepository)
 	userService.SaveAvatar(1, "images/avatar.jpg")
 	authService := auth.NewService()
+
 	//fmt.Println(authService.GenerateToken(10))
 
 	//token, err := authService.ValidateToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxN30.9AhPIz7AyPWBJyk0sb6uFuN2QrPctGRr45n1l7jxaL4")
@@ -76,7 +96,7 @@ func authMiddleware(authService auth.Service, userService user.Service) gin.Hand
 			// mengisi token string dengan array token index ke 1 yang berisi token
 		}
 
-		// disini memvalidasi token yang dapat dari split tadi 
+		// disini memvalidasi token yang dapat dari split tadi
 		token, err := authService.ValidateToken(tokenString)
 
 		if err != nil {
