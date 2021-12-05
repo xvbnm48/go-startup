@@ -23,7 +23,7 @@ func (s *service) FindCampaigns(userID int) ([]Campaign, error) {
 		return campaigns, nil
 	}
 
-	campaigns, err := s.repository.FindAll(userID)
+	campaigns, err := s.repository.FindAll()
 	if err != nil {
 		return campaigns, err
 	}

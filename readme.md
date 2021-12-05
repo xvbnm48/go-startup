@@ -70,4 +70,21 @@ untuk tes token
 		fmt.Println("invalid")
 	}
 ```
+untuk tes ambil data foto
+```go
+	campaings, err := campaignRepository.FindByUserID(1)
+
+	fmt.Println(len(campaings))
+
+	for _, campaign := range campaings {
+		fmt.Println(campaign.Name)
+		if len(campaign.CampaignImages) > 0 {
+			fmt.Println(campaign.CampaignImages[0].FileName)
+
+		}
+	}
+```
+
+untuk simpan foto tes
+	userService.SaveAvatar(1, "images/avatar.jpg")
 
