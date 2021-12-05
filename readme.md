@@ -54,3 +54,20 @@ terus untuk untuk menyimpan gambarnya dengan perintah
 c.SaveUploadedFile()
 ```
 dengan paramerternya , file tadi yang ditangkap dan path nya
+
+untuk tes token
+```go
+	fmt.Println(authService.GenerateToken(10))
+
+	token, err := authService.ValidateToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxN30.9AhPIz7AyPWBJyk0sb6uFuN2QrPctGRr45n1l7jxaL4")
+	if err != nil {
+		fmt.Println("error")
+	}
+
+	if token.Valid {
+		fmt.Println("valid")
+	} else {
+		fmt.Println("invalid")
+	}
+```
+
