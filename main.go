@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"go-startup/auth"
 	"go-startup/campaign"
 
@@ -30,15 +29,14 @@ func main() {
 	campaignRepository := campaign.NewRepository(db)
 
 	userService := user.NewService(userRepository)
-
 	campaignService := campaign.NewService(campaignRepository)
-
 	authService := auth.NewService()
 
-	campaigns, err := campaignService.FindCampaigns(0)
-	fmt.Println(len(campaigns))
+	//	campaigns, err := campaignService.FindCampaigns(0)
+	//	fmt.Println(len(campaigns))
 
 	userHandler := handler.NewUserHandler(userService, authService)
+	campaignHandler := handler.NewCampaignHandler(campaignService)
 
 	router := gin.Default()
 
@@ -48,6 +46,7 @@ func main() {
 	api.POST("/sessions", userHandler.Login)
 	api.POST("/email_checkers", userHandler.CheckEmailAvailability)
 	api.POST("/avatars", authMiddleware(authService, userService), userHandler.UploadAvatar)
+	api.GET("/campaigns", campaignHandler.GetCampaigns)
 
 	router.Run()
 }
