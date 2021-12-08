@@ -52,7 +52,7 @@ func (h *campaignHandler) GetCampaign(c *gin.Context) {
 		return
 	}
 
-	campaign, err := h.service.GetCampaignsByID(input)
+	campaignDetail, err := h.service.GetCampaignsByID(input)
 	if err != nil {
 		response := helper.APIResponse("Error to get campaigns", http.StatusBadRequest, "error", nil)
 		c.JSON(http.StatusBadRequest, response)
@@ -60,7 +60,7 @@ func (h *campaignHandler) GetCampaign(c *gin.Context) {
 
 	}
 
-	response := helper.APIResponse("campaign detail", http.StatusOK, "success", campaign)
+	response := helper.APIResponse("campaign detail", http.StatusOK, "success", campaign.FormatCampaignDetail(campaignDetail))
 	c.JSON(http.StatusOK, response)
 
 	// handler : mapping id dari url ke struct input => service, call formatter
