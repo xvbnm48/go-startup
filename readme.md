@@ -88,3 +88,20 @@ untuk tes ambil data foto
 untuk simpan foto tes
 	userService.SaveAvatar(1, "images/avatar.jpg")
 
+# untuk mengetes service create campaign 
+``` go
+input := campaign.CreateCampaignInput{}
+	input.Name = "penggalanga  dana JKT48 agar tidak bubar"
+	input.ShortDescription = "macet"
+	input.Description = "macet cokkkkkk"
+	input.GoalAmount = 1000000000
+	input.Perks = "hadiah,hadiah2,hadiah3"
+
+	inputUser, _ := userService.GetUserByID(1)
+	input.User = inputUser
+
+	_, err = campaignService.CreateCampaign(input)
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+```
