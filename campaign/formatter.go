@@ -50,16 +50,18 @@ func FormatCampaigns(campaigns []Campaign) []CampaignFormatter {
 }
 
 type CampaignDetailFormatter struct {
-	ID               int      `json:"id"`
-	Name             string   `json:"name"`
-	ShortDescription string   `json:"short_description"`
-	Description      string   `json:"description"`
-	ImageURL         string   `json:"image_url"`
-	GoalAmount       int      `json:"goal_amount"`
-	CurrentAmount    int      `json:"current_amount"`
-	UserID           int      `json:"user_id"`
-	Slug             string   `json:"slug"`
-	Perks            []string `json:"perks"`
+	ID               int                      `json:"id"`
+	Name             string                   `json:"name"`
+	ShortDescription string                   `json:"short_description"`
+	Description      string                   `json:"description"`
+	ImageURL         string                   `json:"image_url"`
+	GoalAmount       int                      `json:"goal_amount"`
+	CurrentAmount    int                      `json:"current_amount"`
+	UserID           int                      `json:"user_id"`
+	Slug             string                   `json:"slug"`
+	Perks            []string                 `json:"perks"`
+	User             CampaignUserFormatter    `json:"user"`
+	Images           []CampaignImageFormatter `json:"images"`
 }
 
 func FormatCampaignDetail(campaign Campaign) CampaignDetailFormatter {
@@ -84,6 +86,41 @@ func FormatCampaignDetail(campaign Campaign) CampaignDetailFormatter {
 	}
 	campaignDetailFormatter.Perks = perks
 
+	CampaignUserFormatter := CampaignUserFormatter{}
+
+	user := campaign.User
+
+	CampaignUserFormatter.Name = user.Name
+	CampaignUserFormatter.ImageURL = user.AvatarFileName
+
+	campaignDetailFormatter.User = CampaignUserFormatter
+
+	images := []CampaignImageFormatter{}
+	for _, image := range campaign.CampaignImages {
+		campaignImageFormatter := CampaignImageFormatter{}
+		campaignImageFormatter.ImageURL = image.FileName
+
+		isPrimary := false
+
+		if image.IsPrimary == 1 {
+			isPrimary = true
+		}
+		campaignImageFormatter.IsPrimary = isPrimary
+
+		images = append(images, campaignImageFormatter)
+	}
+	campaignDetailFormatter.Images = images
+
 	return campaignDetailFormatter
 
+}
+
+type CampaignUserFormatter struct {
+	Name     string `json:"name"`
+	ImageURL string `json:"image_url"`
+}
+
+type CampaignImageFormatter struct {
+	ImageURL  string `json:"image_url"`
+	IsPrimary bool   `json:"is_primary"`
 }
