@@ -102,3 +102,50 @@ func (h *campaignHandler) CreateCampaign(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 
 }
+
+// user input
+// handler
+// mapping input ke input struct ada 2 dari user dan ur
+// repository update
+// service
+// repository update data campaign
+//
+
+func (h *campaignHandler) UpdateCampaign(c *gin.Context) {
+	var inputID campaign.GetCampaignDetailInput
+
+	err := c.ShouldBindUri(&inputID)
+	if err != nil {
+		response := helper.APIResponse("Failed to update campaign", http.StatusBadRequest, "error", nil)
+
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	// sudah dapat id nya
+
+	var inputData campaign.CreateCampaignInput
+
+	err = c.ShouldBindJSON(&inputData)
+	if err != nil {
+		errors := helper.FormatValidationError(err)
+		errorMessage := helper.APIResponse("Failed to update Campaign", http.StatusBadRequest, "error", errors)
+		c.JSON(http.StatusBadRequest, errorMessage)
+		return
+
+	}
+
+	currentUser := c.MustGet("currentUser").(user.User)
+
+	inputData.User = currentUser
+	updatedCampaign, err := h.service.UpdateCampaign(inputID, inputData)
+
+	if err != nil {
+		response := helper.APIResponse("Failed to update Campaign", http.StatusBadRequest, "error", nil)
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	response := helper.APIResponse("Success to update Campaign", http.StatusOK, "Success", updatedCampaign)
+	c.JSON(http.StatusOK, response)
+}
