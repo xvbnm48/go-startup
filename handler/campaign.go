@@ -171,6 +171,9 @@ func (h *campaignHandler) UploadImage(c *gin.Context) {
 		return
 
 	}
+	currentUser := c.MustGet("currentUser").(user.User)
+	input.User = currentUser
+	userId := currentUser.ID
 
 	file, err := c.FormFile("file")
 
@@ -183,9 +186,6 @@ func (h *campaignHandler) UploadImage(c *gin.Context) {
 		return
 
 	}
-
-	currentUser := c.MustGet("currentUser").(user.User)
-	userId := currentUser.ID
 
 	//path := "images/" + file.Filename
 	path := fmt.Sprintf("images/%d-%s", userId, file.Filename)
