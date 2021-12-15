@@ -23,3 +23,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxN30.S
     "goal_amount": 200000000,
     "perks" : "lightstick, t-shirt,towel"
 }
+
+### 
+
+GET http://localhost:8080/api/v1/campaigns/6/transactions
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxN30.SVFwfK26LsCByEIbngH4r8TZ94mADgajGhP8ljZjn9g 
