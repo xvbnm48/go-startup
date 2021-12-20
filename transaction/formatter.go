@@ -65,3 +65,18 @@ func FormatUserTransaction(transaction Transaction) UserTransactionsFormatter {
 	formatter.Campaign = campaignFormatter
 	return formatter
 }
+
+func FormatUserTransactions(transactions []Transaction) []UserTransactionsFormatter {
+	if len(transactions) == 0 {
+		return []UserTransactionsFormatter{}
+	}
+
+	var transactionFormatter []UserTransactionsFormatter
+
+	for _, transaction := range transactions {
+		formatter := FormatUserTransaction(transaction)
+		transactionFormatter = append(transactionFormatter, formatter)
+	}
+
+	return transactionFormatter
+}
