@@ -105,3 +105,18 @@ input := campaign.CreateCampaignInput{}
 		log.Fatal(err.Error())
 	}
 ```
+
+
+## cara test service
+
+```go
+user, _ := userService.GetUserByID(18)
+	input := transaction.CreateTransactionInput{
+		CampaignID: 18,
+		Amount:     92000000,
+		User:       user,
+	}
+
+	transactionService.CreateTransaction(input)
+
+```
