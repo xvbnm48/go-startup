@@ -1,7 +1,6 @@
 package payment
 
 import (
-	"go-startup/transaction"
 	"go-startup/user"
 	"strconv"
 
@@ -12,28 +11,27 @@ type service struct {
 }
 
 type Service interface {
-	GetToken(transaction transaction.Transaction, user user.User) (string, error)
+	GetPaymentURL(transaction Transaction, user user.User) (string, error)
 }
 
 func NewService() *service {
 	return &service{}
 }
 
-func (s *service) GetToken(transaction transaction.Transaction, user user.User) (string, error) {
+func (s *service) GetPaymentURL(transaction Transaction, user user.User) (string, error) {
 	midclient := midtrans.NewClient()
-	midclient.Serverkey = "YOUR-VT-SERVER-KEY"
-	midclient.Clientkey = "YOUR-VT-CLIENT-KEY"
+	midclient.ServerKey = "SB-Mid-server-AoELYIGImglLMflm5ywcrDsl"
+	midclient.ClientKey = "SB-Mid-client-Bb56K9gNvGhuGAMF"
 	midclient.APIEnvType = midtrans.Sandbox
 
-	snapGateway := midtrans.SnapGateway
-	snapGateway = midtrans.SnapGateway{
+	snapGateway := midtrans.SnapGateway{
 		Client: midclient,
 	}
 
 	snapReq := &midtrans.SnapReq{
 		CustomerDetail: &midtrans.CustDetail{
 			Email: user.Email,
-			Fname: user.Name,
+			FName: user.Name,
 		},
 		TransactionDetails: midtrans.TransactionDetails{
 			OrderID:  strconv.Itoa(transaction.ID),

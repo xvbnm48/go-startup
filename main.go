@@ -3,6 +3,7 @@ package main
 import (
 	"go-startup/auth"
 	"go-startup/campaign"
+	"go-startup/payment"
 	"go-startup/transaction"
 
 	"go-startup/handler"
@@ -33,7 +34,9 @@ func main() {
 	userService := user.NewService(userRepository)
 	campaignService := campaign.NewService(campaignRepository)
 	authService := auth.NewService()
-	transactionService := transaction.NewService(transactionRepository, campaignRepository)
+	paymentService := payment.NewService()
+
+	transactionService := transaction.NewService(transactionRepository, campaignRepository, paymentService)
 
 	//	campaigns, err := campaignService.FindCampaigns(0)
 	//	fmt.Println(len(campaigns))
