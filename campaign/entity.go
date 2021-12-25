@@ -30,3 +30,5 @@ type CampaignImage struct {
 	CreatedAt  time.Time
 	UpdatedAt  time.Time
 }
+
+// make api

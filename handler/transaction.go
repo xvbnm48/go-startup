@@ -2,6 +2,7 @@ package handler
 
 import (
 	"go-startup/helper"
+	"go-startup/payment"
 	"go-startup/transaction"
 	"go-startup/user"
 	"net/http"
@@ -16,11 +17,13 @@ import (
 // repo mencari data transaction suatu campaign
 
 type transactionHandler struct {
-	service transaction.Service
+	service        transaction.Service
+	paymentService payment.Service
 }
 
-func NewTransactionHandler(service transaction.Service) *transactionHandler {
-	return &transactionHandler{service}
+func NewTransactionHandler(service transaction.Service, paymentService payment.Service) *transactionHandler {
+	return &transactionHandler{service, paymentService}
+
 }
 
 func (h *transactionHandler) GetCampaignTransaction(c *gin.Context) {
@@ -94,4 +97,24 @@ func (h *transactionHandler) CreateTransaction(c *gin.Context) {
 
 	response := helper.APIResponse("Success to create New Transaction", http.StatusOK, "Success", transaction.FormatTransaction(newTransaction))
 	c.JSON(http.StatusOK, response)
+}
+
+func (h *transactionHandler) GetNofitications(c *gin.Context) {
+	var input transaction.TransactionNotificationInput
+
+	err := c.ShouldBindJSON(&input)
+
+	if err != nil {
+		response := helper.APIResponse("Failed to get notification", http.StatusBadRequest, "error", nil)
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+	err = h.service.ProcessPayment(input)
+	if err != nil {
+		response := helper.APIResponse("Failed to get notification", http.StatusBadRequest, "error", nil)
+		c.JSON(http.StatusBadRequest, response)
+		return
+
+	}
+	c.JSON(http.StatusOK, input)
 }
