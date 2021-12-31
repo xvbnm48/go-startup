@@ -1,4 +1,5 @@
-# Catatan go startupppppp
+# Catatan go startupppppp 20202
+!
 
 
 folder repository itu gunanya untuk sebagai tempat untuk terkoneksi ke database
