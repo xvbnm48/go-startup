@@ -1,4 +1,4 @@
-# Catatan go startupppppp 20202
+# Catatan go startupppppp 2022
 !
 
 
