@@ -1,5 +1,5 @@
 # Catatan go startupppppp 2022
-!
+!!!!!
 
 
 folder repository itu gunanya untuk sebagai tempat untuk terkoneksi ke database
